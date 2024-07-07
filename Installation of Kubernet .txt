@@ -1,0 +1,63 @@
+Installation of Kubernet 
+
+Step-1: Launch 3 instance ( Ubuntu ) with t2.medium with name --> Master , Node-1 , Node-2 and take the ssh of that instance.
+
+Step-2: Allow the port in security Group 
+
+        1. TCP 6443      → For Kubernetes API server
+	2. TCP 2379–2380 → For etcd server client API
+	3. TCP 10250     → For Kubelet API
+	4. TCP 10259     → For kube-scheduler
+	5. TCP 10257     → For kube-controller-manager
+	6. TCP 22        → For remote access with ssh	
+	7. UDP 8472      → Cluster-Wide Network Comm. — Flannel VXLAN
+        8. TCP 30000–32767 → NodePort Services
+
+Step-3: Run all the following command in 3 instance:
+    
+      -   sudo su - 
+      -   sudo apt-get update -y
+      -   apt install docker.io -y
+      -   docker --version
+      -   systemctl start docker
+      -   systemctl status docker
+      -   sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+      -   curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o                 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+      -   sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg 
+      -   echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+      -  sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
+
+      -  apt-get update
+      -  sudo apt-get install -y kubectl kubeadm kubelet kubernetes-cni docker.io
+       
+Step-4: Go to Master Node and run the following command:
+
+         -  kubeadm init
+
+            after running the command Kubernetes initializing we get three line which we run on master node:
+          - mkdir -p $HOME/.kube
+	  - sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+	  - sudo chown $(id -u):$(id -g) $HOME/.kube/config
+ 
+          - kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
+
+Step-5: Run the command in Node which get after kubeadm  init :
+
+       -  kubeadm join 172.31.45.109:6443 --token rn9zpw.nstvf61y61g7qny2 --discovery-token-ca-cert-hash sha256:ac3bac76625471ebbba174be3063bab36013a9c34fe6ece1fd530e5f1a5241e4 
+
+Step-6: Go to master Node and check whether the Node is Connect or not :
+        - kubectl get nodes
+
+
+
+
+
+
+
+
+
+
+
+
+        
