@@ -1,0 +1,19 @@
+
+kind: ReplicationController               
+apiVersion: v1
+metadata:
+  name: myreplica
+spec:
+  replicas: 2            
+  selector:        
+    myname: RS                             
+  template:                
+    metadata:
+      name: testpod6
+      labels:            
+        myname: relpication
+    spec:
+     containers:
+       - name: c00
+         image: ubuntu
+         command: ["/bin/bash", "-c", "while true; do echo Replication Controller; sleep 5 ; done"]
