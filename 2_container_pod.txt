@@ -1,0 +1,12 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: Testpod2
+spec:
+  containers:
+    - name: c1
+      image: ubuntu
+      command: ["/bin/bash", "-c", "while true; do echo From 1 Container; sleep 5 ; done"]
+    - name: c2
+      image: ubuntu
+      command: ["/bin/bash", "-c", "while true; do echo From 2 Container; sleep 5 ; done"]
